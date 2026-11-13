@@ -1,14 +1,33 @@
-name: Manual
+name: Variables and Secrets Practice
+
 on:
-  workflow_dispatch:                       # 手動実行イベント
-    inputs:
-      greeting:                            # 入力パラメータ名
-        type: string                       # データ型（文字列）
-        default: Hello                     # 入力パラメータのデフォルト値
-        required: true                     # 入力パラメータの必須フラグ
-        description: A cheerful word       # 入力パラメータの概要
+  workflow_dispatch:
+
 jobs:
-  run:
+  practice:
     runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: GhostDive
+      APP_ENV: ${{ vars.APP_ENV }}
+      DEMO_API_KEY: ${{ secrets.DEMO_API_KEY }}
+
     steps:
-      - run: echo "${{ inputs.greeting }}" # 入力パラメータ「greeting」の参照
+      - name: Show environment variables
+        run: |
+          echo "App name: $APP_NAME"
+          echo "Environment: $APP_ENV"
+
+      - name: Check secret
+        run: |
+          if [ -n "$DEMO_API_KEY" ]; then
+            echo "Secret is configured"
+          else
+            echo "Secret is missing"
+            exit 1
+          fi
+
+      - name: Show GitHub context
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
