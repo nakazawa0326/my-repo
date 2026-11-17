@@ -1,0 +1,22 @@
+name: Log Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start
+        run: echo "CI started!"
+
+      - name: Show environment
+        run: |
+          echo "OS: $RUNNER_OS"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF_NAME"
+          date
+
+      - name: Finish
+        run: echo "CI finished!"
